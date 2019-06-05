@@ -15,9 +15,21 @@ class LoginForm extends Component {
       .catch(() => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
           .catch(() => {
-            this.setState({ error: 'Authentication Failed.' });
+            this.setState({ error: 'Authentication Failed.', loading: false });
           });
       });
+  }
+
+  renderErrorMessage() {
+    if (this.state.error === '') {
+      return;
+    }
+
+    return (
+      <Text style={styles.errorTextStyle}>
+        {this.state.error}
+      </Text>
+    );
   }
 
   renderButton() {
@@ -52,9 +64,7 @@ class LoginForm extends Component {
           onChangeText={password => this.setState({ password })}
         />
       </CardSection>
-      <Text style={styles.errorTextStyle}>
-        {this.state.error}
-      </Text>
+      {this.renderErrorMessage()}
       <CardSection>
         {this.renderButton()}
       </CardSection>
